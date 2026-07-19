@@ -60,6 +60,9 @@
             background: linear-gradient(135deg, #fff0b3 0%, #d49b13 100%);
         }
 
+        /* VISIBILITY CONTROLS */
+        .mobile-only { display: none; }
+
         /* HERO SECTION CONVERSÃO COM FOTO NO TOPO */
         header {
             background: radial-gradient(circle at center, #24170d 0%, #0b0704 100%);
@@ -297,7 +300,7 @@
 
         /* RESPONSIVENESS */
         @media (max-width: 768px) {
-            .hero-grid { flex-direction: column-reverse; gap: 30px; text-align: center; }
+            .hero-grid { flex-direction: column; gap: 30px; text-align: center; } /* TEXTO EM CIMA, FOTO EMBAIXO */
             .hero-text { text-align: center; }
             h1 { font-size: 2rem; }
             h2 { font-size: 1.7rem; }
@@ -305,6 +308,9 @@
             .deliverables-grid { grid-template-columns: 1fr; }
             .new-price { font-size: 3rem; }
             .cta-button { font-size: 1.1rem; padding: 18px 25px; }
+            
+            .desktop-only { display: none; }
+            .mobile-only { display: inline-block; width: 100%; max-width: 450px; }
         }
     </style>
 </head>
@@ -321,12 +327,14 @@
                     <h1>Método de <br><span class="gold-text">Ancoramento Arquetípico</span></h1>
                     <p class="subtitle">Aprenda a ativar os arquétipos da forma correta e descubra como potencializar resultados verdadeiramente transformadores na sua vida.</p>
                     
-                    <a href="#comprar" class="cta-button">Quero Acessar o Método Agora</a>
+                    <a href="#comprar" class="cta-button desktop-only">Quero Acessar o Método Agora</a>
                 </div>
 
                 <!-- Lado Direito: Sua Imagem Oficial Carregada -->
                 <div class="hero-image-area">
-                <img src="foto.jpg.png" alt="Método de Ancoramento Arquetípico">
+                    <img src="foto.jpg.png" alt="Método de Ancoramento Arquetípico">
+                    
+                    <a href="#comprar" class="cta-button mobile-only" style="margin-top: 25px;">Quero Acessar o Método Agora</a>
                 </div>
 
             </div>
@@ -386,7 +394,7 @@
                 </div>
                 <div class="deliverable-card">
                     <h3><span>⚜️</span> Guia de Fortalecimento</h3>
-                    <p>Como blindar e fortalecer sua conexão com o arquétipo escolhido para manter a prática consciente e consistent.</p>
+                    <p>Como blindar e fortalecer sua conexão com o arquétipo escolhido para manter a prática consciente e consistente.</p>
                 </div>
             </div>
 
