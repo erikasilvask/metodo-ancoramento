@@ -4,437 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Método de Ancoramento Arquetípico</title>
+    <!-- Fontes e Icones -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* RESET & BASE STYLES */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
-        }
+        :root { --gold: #cda242; --dark: #0b0704; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--dark); color: #f5f5f7; line-height: 1.6; font-family: 'Poppins', sans-serif; }
+        h1, h2 { font-family: 'Cinzel', serif; text-transform: uppercase; }
+        .subtitle { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; }
 
-        body {
-            background-color: #0b0704;
-            color: #f5f5f7;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+        /* Partículas de Fundo */
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; background: radial-gradient(circle at center, #1a120b 0%, var(--dark) 100%); z-index: -1; }
 
-        .container {
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        /* HERO REFINADO */
+        header { padding: 60px 0; text-align: center; }
+        .hero-image-area { position: relative; display: inline-block; }
+        .hero-image-area img { width: 60%; max-width: 500px; border-radius: 10px; box-shadow: 0 0 50px rgba(205, 162, 66, 0.3); }
 
-        /* GOLD TEXT GRADIENT */
-        .gold-text {
-            background: linear-gradient(135deg, #ffe596 0%, #cda242 50%, #ae7f1e 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
-        }
+        /* BOTÃO FIXO MOBILE */
+        .fixed-cta { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px; background: rgba(0,0,0,0.9); text-align: center; z-index: 1000; border-top: 1px solid var(--gold); display: none; }
+        @media (max-width: 768px) { .fixed-cta { display: block; } .hero-image-area img { width: 90%; } }
 
-        /* PRIMARY BUTTON */
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #ffd778 0%, #b8860b 100%);
-            color: #000;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.2rem;
-            text-transform: uppercase;
-            padding: 20px 40px;
-            border-radius: 50px;
-            box-shadow: 0 4px 20px rgba(184, 134, 11, 0.4);
-            transition: all 0.3s ease;
-            text-align: center;
-            letter-spacing: 1px;
-            width: 100%;
-            max-width: 450px;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(184, 134, 11, 0.6);
-            background: linear-gradient(135deg, #fff0b3 0%, #d49b13 100%);
-        }
-
-        /* VISIBILITY CONTROLS */
-        .mobile-only { display: none; }
-
-        /* HERO SECTION CONVERSÃO COM FOTO NO TOPO */
-        header {
-            background: radial-gradient(circle at center, #24170d 0%, #0b0704 100%);
-            padding: 60px 0;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-        }
-
-        .hero-grid {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .hero-text {
-            flex: 1;
-            text-align: left;
-        }
-
-        .hero-image-area {
-            flex: 1;
-            text-align: center;
-        }
-
-        .hero-image-area img {
-            width: 100%;
-            max-width: 420px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.7), 0 0 20px rgba(212, 175, 55, 0.2);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .badge {
-            font-size: 0.9rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #d4af37;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        h1 {
-            font-size: 2.8rem;
-            line-height: 1.2;
-            margin-bottom: 25px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            color: #d1cbd4;
-            margin-bottom: 40px;
-            font-weight: 400;
-        }
-
-        /* PROMESSA DESTAQUE */
-        .highlight-box {
-            background: rgba(36, 23, 13, 0.6);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            padding: 30px;
-            border-radius: 12px;
-            text-align: left;
-            width: 100%;
-        }
-
-        .highlight-box p {
-            font-size: 1.1rem;
-            color: #e3ded5;
-            margin-bottom: 15px;
-        }
-        .highlight-box p:last-child { margin-bottom: 0; }
-
-        /* CARACTERÍSTICAS RÁPIDAS */
-        .features-bar {
-            background: #120c08;
-            padding: 25px 0;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-        }
-
-        .grid-4 {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-            text-align: center;
-        }
-
-        .feature-item h4 {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #ffd778;
-        }
-
-        /* PUBLIC SECTION */
-        .target-section {
-            padding: 80px 0;
-            background: #0b0704;
-        }
-
-        h2 {
-            font-size: 2.2rem;
-            text-align: center;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .target-list {
-            list-style: none;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .target-list li {
-            position: relative;
-            padding-left: 35px;
-            margin-bottom: 25px;
-            font-size: 1.1rem;
-            color: #e3ded5;
-        }
-
-        .target-list li::before {
-            content: "✨";
-            position: absolute;
-            left: 0;
-            top: 2px;
-            font-size: 1.2rem;
-        }
-
-        /* DELIVERABLES SECTION */
-        .deliverables-section {
-            padding: 80px 0;
-            background: linear-gradient(180deg, #0b0704 0%, #17100a 50%, #0b0704 100%);
-        }
-
-        .deliverables-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-
-        .deliverable-card {
-            background: rgba(20, 13, 8, 0.8);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            padding: 30px;
-            border-radius: 8px;
-            transition: border 0.3s ease;
-        }
-
-        .deliverable-card:hover {
-            border-color: rgba(212, 175, 55, 0.4);
-        }
-
-        .deliverable-card h3 {
-            color: #ffd778;
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .deliverable-card p {
-            color: #cdc7be;
-            font-size: 1rem;
-        }
-
-        /* BONUS BLOCK */
-        .bonus-box {
-            background: radial-gradient(circle at top left, #2c1e13 0%, #120c08 100%);
-            border: 2px dashed #cda242;
-            padding: 40px;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        .bonus-badge {
-            background: #cda242;
-            color: #000;
-            padding: 5px 15px;
-            font-weight: 900;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-
-        /* OFFER SECTION */
-        .offer-section {
-            padding: 80px 0;
-            text-align: center;
-            background: radial-gradient(circle at center, #24170d 0%, #0b0704 80%);
-        }
-
-        .price-container {
-            margin: 40px 0;
-        }
-
-        .old-price {
-            font-size: 1.3rem;
-            text-decoration: line-through;
-            color: #8a8279;
-            margin-bottom: 5px;
-        }
-
-        .new-price {
-            font-size: 4rem;
-            font-weight: 900;
-            color: #fff;
-            line-height: 1;
-            margin-bottom: 15px;
-        }
-
-        .offer-note {
-            font-size: 1.1rem;
-            color: #ffd778;
-            margin-top: 25px;
-            font-style: italic;
-        }
-
-        footer {
-            padding: 40px 0;
-            text-align: center;
-            font-size: 0.85rem;
-            color: #665f57;
-            border-top: 1px solid rgba(212, 175, 55, 0.05);
-        }
-
-        /* RESPONSIVENESS */
-        @media (max-width: 768px) {
-            .hero-grid { flex-direction: column; gap: 30px; text-align: center; } /* TEXTO EM CIMA, FOTO EMBAIXO */
-            .hero-text { text-align: center; }
-            h1 { font-size: 2rem; }
-            h2 { font-size: 1.7rem; }
-            .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-            .deliverables-grid { grid-template-columns: 1fr; }
-            .new-price { font-size: 3rem; }
-            .cta-button { font-size: 1.1rem; padding: 18px 25px; }
-            
-            .desktop-only { display: none; }
-            .mobile-only { display: inline-block; width: 100%; max-width: 450px; }
-        }
+        .cta-button { background: var(--gold); color: #000; padding: 20px 40px; border-radius: 50px; font-weight: 800; text-decoration: none; display: inline-block; }
     </style>
 </head>
 <body>
+    <div class="particles"></div>
 
-    <!-- HERO SECTION (TOPO COM FOTO INTEGRADA) -->
     <header>
         <div class="container">
-            <div class="hero-grid">
-                
-                <!-- Lado Esquerdo: Mensagem Forte de Vendas -->
-                <div class="hero-text">
-                    <span class="badge">⚜️ Método Exclusivo ⚜️</span>
-                    <h1>Método de <br><span class="gold-text">Ancoramento Arquetípico</span></h1>
-                    <p class="subtitle">Aprenda a ativar os arquétipos da forma correta e descubra como potencializar resultados verdadeiramente transformadores na sua vida.</p>
-                    
-                    <a href="#comprar" class="cta-button desktop-only">Quero Acessar o Método Agora</a>
-                </div>
-
-                <!-- Lado Direito: Sua Imagem Oficial Carregada -->
-                <div class="hero-image-area">
-                    <img src="foto.jpg.png" alt="Método de Ancoramento Arquetípico">
-                    
-                    <a href="#comprar" class="cta-button mobile-only" style="margin-top: 25px;">Quero Acessar o Método Agora</a>
-                </div>
-
-            </div>
-
-            <!-- Caixa de Destaque Inferior -->
-            <div class="highlight-box">
-                <p><strong>Chega de ativar inúmeros arquétipos sem saber se está fazendo da maneira certa.</strong></p>
-                <p>Neste método, eu compartilho exatamente o processo que utilizo nas minhas próprias ativações arquetípicas. Um passo a passo simples, prático e organizado, desenvolvido para ajudar você a compreender como trabalhar os arquétipos com mais consciência, intenção e direcionamento.</p>
-                <p>Se você sente que está perdida, pulando de um arquétipo para outro sem perceber mudanças, este método pode transformar completamente a forma como você utiliza esse conhecimento.</p>
+            <h1>Método de <span class="gold-text">Ancoramento Arquetípico</span></h1>
+            <p class="subtitle">Aprenda a ativar os arquétipos da forma correta e descubra como potencializar resultados.</p>
+            
+            <div class="hero-image-area">
+                <img src="foto.jpg.png" alt="Método de Ancoramento Arquetípico">
             </div>
         </div>
     </header>
 
-    <!-- FEATURES BAR -->
-    <section class="features-bar">
-        <div class="container">
-            <div class="grid-4">
-                <div class="feature-item"><h4>⚡ ATIVAÇÃO REAL</h4></div>
-                <div class="feature-item"><h4>👑 RESULTADOS PODEROSOS</h4></div>
-                <div class="feature-item"><h4>🪷 PASSO A PASSO COMPLETO</h4></div>
-                <div class="feature-item"><h4>❤️ MÉTODO QUE EU UTILIZO</h4></div>
-            </div>
-        </div>
+    <!-- GARANTIA -->
+    <section style="padding: 50px 0; text-align: center; border-top: 1px solid var(--gold);">
+        <i data-lucide="shield-check" style="color: var(--gold); width: 48px; height: 48px;"></i>
+        <h2>7 Dias de Garantia Incondicional</h2>
+        <p>Se você não se sentir satisfeita, devolvo 100% do seu dinheiro.</p>
     </section>
 
-    <!-- TARGET SECTION -->
-    <section class="target-section">
-        <div class="container">
-            <h2>Para quem é este método?</h2>
-            <ul class="target-list">
-                <li>Para quem já ativou diversos arquétipos e nunca conseguiu perceber resultados consistentes.</li>
-                <li>Para quem não faz ideia de por onde começar.</li>
-                <li>Para quem deseja aprender a ativar arquétipos de forma correta e potencializar mudanças reais em diferentes áreas da vida.</li>
-                <li>Para quem busca um método simples, prático e eficiente, sem complicações.</li>
-                <li>Para quem deseja utilizar os arquétipos com muito mais confiança e clareza.</li>
-            </ul>
-        </div>
-    </section>
+    <!-- BARRA FIXA MOBILE -->
+    <div class="fixed-cta">
+        <a href="#comprar" class="cta-button">Acessar Agora</a>
+    </div>
 
-    <!-- DELIVERABLES SECTION -->
-    <section class="deliverables-section">
-        <div class="container">
-            <h2>O Que Você Vai Receber</h2>
-            
-            <div class="deliverables-grid">
-                <div class="deliverable-card">
-                    <h3><span>⚜️</span> O Método Completo</h3>
-                    <p>Acesso integral ao meu Método de Ancoramento Arquetípico com toda a base teórica e prática necessária.</p>
-                </div>
-                <div class="deliverable-card">
-                    <h3><span>⚜️</span> Direcionamento Atual</h3>
-                    <p>Descubra com precisão qual arquétipo faz mais sentido para o seu momento de vida atual.</p>
-                </div>
-                <div class="deliverable-card">
-                    <h3><span>⚜️</span> Materiais de Apoio</h3>
-                    <p>Todos os materiais e ferramentas necessários para realizar a sua ativação de forma segura.</p>
-                </div>
-                <div class="deliverable-card">
-                    <h3><span>⚜️</span> Guia de Fortalecimento</h3>
-                    <p>Como blindar e fortalecer sua conexão com o arquétipo escolhido para manter a prática consciente e consistente.</p>
-                </div>
-            </div>
-
-            <p style="text-align: center; max-width: 700px; margin: 0 auto; color: #e3ded5; font-size: 1.1rem;">
-                Ao concluir o método, você terá segurança para ativar qualquer arquétipo utilizando um processo claro, organizado e que poderá aplicar sempre que desejar.
-            </p>
-
-            <!-- BONUS BLOCK -->
-            <div class="bonus-box">
-                <span class="bonus-badge">Bônus Especial 🎁</span>
-                <h3 class="gold-text" style="font-size: 1.5rem; margin-bottom: 10px;">Telinhas Arquetípicas Estratégicas</h3>
-                <p style="color: #cdc7be; max-width: 600px; margin: 0 auto;">Aprenda como criar Telinhas Arquetípicas de forma estratégica para potencializar suas ativações diretamente no plano de fundo do seu celular.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- OFFER SECTION -->
-    <section id="comprar" class="offer-section">
-        <div class="container">
-            <span class="badge">Acesso Imediato</span>
-            <h2>Invista no seu Desenvolvimento</h2>
-            
-            <div class="price-container">
-                <p class="old-price">De R$ 147,90</p>
-                <p class="new-price"><span style="font-size: 1.8rem; font-weight:400; vertical-align: super;">R$</span> 78,90</p>
-                <p style="color:#8a8279; font-size:0.9rem;">Pagamento único com acesso seguro</p>
-            </div>
-
-            <a href="https://pay.kiwify.com.br/RzflfIY" class="cta-button" style="font-size: 1.3rem;">⚜️ Quero Acessar o Método Agora ⚜️</a>
-
-            <p class="offer-note">"Uma única aplicação desse método pode mudar completamente a forma como você trabalha com os arquétipos."</p>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Método de Ancoramento Arquetípico. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
+    <script>lucide.createIcons();</script>
 </body>
 </html>
